@@ -1,0 +1,59 @@
+library(dplyr)
+
+X <- 133
+
+Y <- 36
+
+Z <- X + Y
+Z
+
+sqrt(Z)
+
+log(sqrt(Z)) 
+
+log(sqrt(Z)) %>% round()
+________________________________________________
+#'Sequência de Fibonacci
+#' 1,1,2,3,5
+
+fibo_soma <- sum(1,1,2,3,5)
+fibo_soma
+
+fibo_log <- log(fibo_soma)
+fibo_log
+
+round(fibo_log, 3)
+________________________________________________
+#Construindo a função
+
+funcao <- function(x){
+  resultado <- sin(2) + 2
+  return(resultado)
+}
+funcao(x=2) 
+round(funcao(x=2) , 3)
+________________________________________________
+factor_10 <- factorial(10)
+factor_10
+log10(factor_10)
+round(log10(factor_10), 2)
+________________________________________________
+
+#'Equação de equivalência massa-energia E = m*c^2 
+#' M = 10kg
+equi_massa_ener <- 10 * 300000000^2
+equi_massa_ener
+log(equi_massa_ener)
+round(log(equi_massa_ener), 2)
+
+________________________________________________
+v<-c(2,5,7,8,9)
+
+f <- function(x){
+  return(x^3 + x^2 + x)
+}
+resultado <- f(v)
+resultado
+
+media <- mean(resultado)
+media
