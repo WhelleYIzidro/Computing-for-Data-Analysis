@@ -1,0 +1,65 @@
+x <- 1:4
+y <- 2:3
+
+x*y
+_______________________________________
+
+Nomes <- c("Maria", "Joana")
+
+abdm.2min <- c(42,38)
+salto <- c(102,173)
+suspen.bracos <- c(38,71)
+correr.andar <- c(2149,1554)
+conhec.despor <- c(97,70)
+
+#padronização
+abdm.2min.p <- (abdm.2min - mean(abdm.2min)) / sd(abdm.2min) 
+salto.p <-  (salto-mean(salto) / sd(salto))
+suspen.bracos.p <- (suspen.bracos-mean(suspen.bracos) / sd(suspen.bracos))
+correr.andar.p <- (correr.andar-mean(correr.andar) / sd(correr.andar))
+conhec.despor.p <- (conhec.despor-mean(conhec.despor) /  sd(conhec.despor)) 
+
+#o melhor desempenho
+
+media <- abdm.2min.p + salto.p + suspen.bracos.p + 
+        correr.andar.p + conhec.despor.p / 5
+media
+
+max(media)
+
+Nomes[max(media)==media]
+_______________________________________
+setwd("C:/Users/LEVE/Downloads")
+dir()
+
+load("C:/Users/LEVE/Downloads/vetor.RData")
+
+vetor01
+dados <- vetor01
+dados
+
+dados.faltosos <- sum(is.na(dados))
+dados.faltosos
+
+dados.sem.na <- dados[!is.na(dados)]
+dados.sem.na
+
+media.dados <- mean(dados)
+media.dados
+
+mediana.dados <- median(dados)
+mediana.dados
+
+sd.dados <- sd(dados)
+sd.dados
+
+n.obsr <- 15000
+n.faltas <- 321
+porcentagem <- n.faltas / n.obsr
+print(porcentagem)
+
+notas.7_8 <- sum(dados.sem.na > 7.00 & dados.sem.na < 8.00)
+print(notas.7_8)
+
+notas.9_1 <- sum(dados.sem.na > 9.00 | dados.sem.na < 1.00)
+print(notas.9_1)
