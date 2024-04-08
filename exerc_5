@@ -1,0 +1,58 @@
+mouse.color <- c("purple", "red", "yellow", "brown")
+mouse.weight <- c(23,21,1,26)
+
+mouse.info <- data.frame(colour = mouse.color, weight = mouse.weight )
+
+print(mouse.info)
+
+print(mouse.info[3, ])
+
+print(mouse.info[, 1])
+
+print(mouse.info[4, 1])
+________________________________________
+data(airquality)
+
+ozonio <- subset(airquality, Month == 5)
+
+min.ozonio <- min(ozonio$Ozone, na.rm = TRUE)    
+
+print(min.ozonio) 
+________________________________________
+
+ozo.temp <- subset(airquality, Ozone > 25 & Temp < 90)
+
+print(ozo.temp)
+
+solar.r <- mean(ozo.temp$Solar.R, na.rm = TRUE)
+
+print(solar.r)
+
+________________________________________
+
+clean_airquality <- na.omit(airquality)
+
+num_rows <- nrow(clean_airquality)
+
+print(num_rows)
+
+______________________________________
+
+genomas <- as.data.frame(read.csv("https://www.dropbox.com/s/vgh6qk395ck86fp/genomes.csv?dl=1"))
+
+cromossomo.40 <- subset(genomas, Chromosomes > 40)
+
+print(cromossomo.40)
+
+plasm.cromo <- subset(genomas, Plasmids > 0 & Chromosomes > 0)
+
+print(plasm.cromo)
+
+num.orga <- nrow(genomas)
+print(num.orga)
+
+______________________________________
+
+cancer_stats <- as.data.frame(read.csv("https://www.dropbox.com/s/g97bsxeuu0tajkj/cancer_stats.csv?dl=1"))
+
+digestive.system <- subset(cancer_stats, Class == "Digestive System")
