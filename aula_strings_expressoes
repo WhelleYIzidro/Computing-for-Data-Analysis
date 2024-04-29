@@ -1,0 +1,13 @@
+#funções de manipulação de texto
+print() #imprime texto
+cat() #concatena strings 
+paste() #concatena texto retornando strings entre aspas ou separadas por outros caracteres 
+strsplit() #desconcatenar strings
+toupper() #deixar o texto em caixa alta
+tolower() #deixar o texto em caixa baixa
+str_trim() #função do pacote stringr que permite apagar espaços em branco
+gsub() #substituição de textos
+substr() #fatiamento de textos em um intrevalo específico de caracteres
+nchar() #conta quantos caracteres existem na string
+
+#funções regulares (regex)
