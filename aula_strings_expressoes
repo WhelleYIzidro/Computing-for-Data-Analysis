@@ -11,3 +11,14 @@ substr() #fatiamento de textos em um intrevalo específico de caracteres
 nchar() #conta quantos caracteres existem na string
 
 #funções regulares (regex)
+#'Especificadores
+#'Quantificadores
+#'Âncora
+#'Agrupamento 
+#'POSIX
+
+#'SITES PARA TESTAR AS EXPRESSÕES REGULARES:
+#'https://regexr.com/
+#'https://www.regextester.com/
+#'https://regex101.com/
+#'https://www.freeformatter.com/regex-tester.html
