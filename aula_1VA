@@ -1,0 +1,78 @@
+#A forma mais fácil de instalar o pacote purr é a partir do pacote tidyverse
+install.packages("tidyverse")
+
+#Ou também instalando diretamente
+install.packages("purrr")
+
+
+#exemplo
+
+df <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+
+print(df)
+
+#'Imagine que você precisa calcular a média de cada coluna.
+#'Você pode fazer isso utilizando um loop:
+
+
+mean.saida <- vector("double", length(df))
+for(i in seq_along(sd)) {
+  mean.saida[[i]] <- mean(df[[i]])
+}
+
+mean.saida
+
+#'Seria interessante também calcular a mediana e o desvio padrão de cada
+#'coluna. Então você copia, altera e cola sua função de média para mediana
+#'e desvio padrão:
+
+col_median <- function(df) {
+  output <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    output[i] <- median(df[[i]])
+  }
+  output
+}
+
+col_sd <- function(df) {
+  output <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    output[i] <- sd(df[[i]])
+  }
+  output
+}
+
+col_summary <- function(df, fun) {
+  out <- vector("double", length(df))
+  if(is.function(fun)) {
+    for (i in seq_along(df)) {
+      out[i] <- fun(df[[i]])
+    }
+  } else {
+    out <- sapply(df, fun)
+  }
+  out
+}
+
+
+col_summary(df, median)
+col_summary(df, mean)
+col_summary(df, sd)
+
+#'De maneira a deixar o código mais claro, de fácil compreenção a função map
+#'pode ser usada 
+
+purrr::map_dbl(df, mean)
+purrr::map_dbl(df, median)
+purrr::map_dbl(df, sd)
+
+#Utilizando o operador pipe é possível deixar o código ainda mais objetivo
+df %>% purrr::map_dbl(mean)
+df %>% purrr::map_dbl(median)
+df %>% purrr::map_dbl(sd)
+
