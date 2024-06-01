@@ -1,0 +1,81 @@
+#GRÁFICO DE LINHAS
+x <-  1:15
+y <- x**2
+t <- x**3
+
+par(mfrow = c(1,2))
+
+plot(x,y, type ="o", pch = 20,
+     cex =2, col= "red",
+     xlab ="Eixo x", ylab ="Eixo y",         
+     main = "Gráfico simples",
+     cex.lab= 1.5, cex.main= 2,
+     cex.axis=2, xlim = c(0,15),
+     ylim = c(0,3375))
+lines(t, type= "o", col= "blue")
+legend("topleft", pch = c(3,1),
+       col = c("red", "blue"),
+       legend = c("Dados 1", "Dados 2"))
+_________________
+X <- c(1:5)
+y <- X
+
+par(pch=20, col="black")
+par(mfrow= c(2,4))
+opts = c("p", "l", "o", "b", "c", "s", "S", "h")
+
+for(i in 1:length(opts)) {
+  heading = paste("type", opts[i])
+  plot(X, y, type= "n", main=heading)
+  lines(X, y, type = opts[i])
+}
+_________
+dados <- cars
+x <- dados$speed
+y <- dados$dist
+
+par(mfrow = c(1,1))
+
+plot(x,y, type ="o", pch = 20,
+     cex =1, col= "red",
+     main = "Relação entre velocidade e distância",
+     xlab ="Velociade", ylab ="Distância")
+____________________________________
+#GRÁFICO DE DISPERSÃO 
+iris
+plot(iris$Sepal.Length, iris$Petal.Length,
+     main = "Iris data", col = iris$Species,
+     pch = 20, cex = 2,
+     xlab = "Sepal Lenght", ylab = "Petal Lenght")
+legend(x = 4.5, y = 7, pch = 20, col = c(1:3),
+       levels(iris$Species))
+____________________________________
+#GRÁFICO DE BARRAS
+max.temp <- c(30, 35, 40, 38, 25, 24, 23)
+barplot(max.temp,
+        main = "Máxima temperatura em uma semana",
+        ylab = "Graus em Celsius",
+        xlab = "Dia",
+        names.arg = c("Sun", "Mon", 
+                      "Tus", "Wed", "Thu", "Fri", "Sat"),
+        col = rainbow(10), horiz = TRUE)
+__________
+colors <- c("green", "orange", "brown")
+months <- c("Mar", "Apr", "May", "Jun", "Jul")
+regions <- c("East", "West", "North")
+
+#criar uma matriz dos valores
+
+values <- 
+  matrix(c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
+         nrow = 3, ncol = 5, byrow = TRUE)
+
+barplot(values, main = "Rendimento total", 
+        names.arg = months, xlab = "Meses", ylab = "Rendimento", col = colors, beside = TRUE)
+legend("topleft", pch = c(15, 15, 15), col = colors, legend = regions)
+____________________________________
+#HISTOGRAMA
+temperature <- airquality$Temp
+hist(temperature, col = "grey", probability = TRUE)
+densityTemp <- density(temperature)
+lines(densityTemp)
