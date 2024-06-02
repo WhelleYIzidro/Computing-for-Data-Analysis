@@ -1,3 +1,4 @@
+####VISUALIZAÇÃO GRÁFICO COM O R TRADICIONAL
 #GRÁFICO DE LINHAS
 x <-  1:15
 y <- x**2
@@ -79,3 +80,92 @@ temperature <- airquality$Temp
 hist(temperature, col = "grey", probability = TRUE)
 densityTemp <- density(temperature)
 lines(densityTemp)
+
+____________________________________
+#GRÁFICO DE PIZZA
+aux <- c(32, 12, 30, 53)
+labels <- c("Recife", "Durham", 
+            "Toronto", "Amsterdam")
+ppcs <- round(aux/sum(aux)*100)
+labls <- paste(labels, ppcs)
+labl <- paste(labls, "%", sep = "")
+pie(aux, labl, main = "Gráfico de cidades",
+    col = rainbow(4))
+__________ 
+#adicionando uma legenda
+ppcs <- round(aux/sum(aux)*100)
+labl <- paste(ppcs, "%", sep = "")
+pie(aux, labl, main = "Gráfico de cidades",
+    col = rainbow(4))
+legend("topright", 
+       legend = c("Recife", "Durham", 
+                  "Toronto", "Amsterdam"),
+       cex = 0.8, fill = rainbow(length(aux)))
+__________
+library(HistData)
+dados <- Nightingale
+army <- 839431
+disease <- 14476
+wounds <- 1758
+
+causa.morte <- data.frame(army, disease, wounds)
+ppcs <- round(causa.morte / sum(causa.morte)*100)
+labels <- paste(ppcs, "%", sep = "")
+pie(causa.morte, labels, main = "Causa Morte",
+    col = rainbow(3))
+legend("topright", 
+       legend = c("army", "disease", 
+                  "wounds"),
+       cex = 0.8, fill = rainbow(length(aux)))
+____________________________________
+#GRÁFICO BOXPLOT
+
+boxplot(mpg ~ cyl, data = mtcars,
+        xlab = "Número de cilindros",
+        ylab = "Milhas por galão", 
+        mian = "Dados de milhagem")
+____________________________________
+#EXPOSTANDO O GRÁFICO
+pdf(file = "plot_saved.pdf")
+boxplot(mpg ~ cyl, data = mtcars,
+        xlab = "Número de cilindros",
+        ylab = "Milhas por galão", 
+        mian = "Dados de milhagem")
+dev.off()
+####VISUALIZAÇÃO GRÁFICO COM O PLOTLY####
+library(plotly)
+#GRÁFICO DE DISPERÇÃO
+iris
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length)
+fig
+
+#GRÁFICO DE LINHA
+anos <- c(2007:2016)
+pm <- c(10, 8, 6, 11, 7, 5, 1, 15,
+        22, 29)
+pm.tempo <- data.frame(anos, pm)
+
+plotly::plot_ly(pm.tempo, x = ~anos, y = ~pm, mode ='lines')
+
+#GRÁFICO DE BARRA
+animais <- c("Girafas", "Chipanzé", "Serpentes")
+n.anm <- c(20, 14, 7)
+
+animal.data <- data.frame(animais, n.anm)
+
+
+plotly::plot_ly(animal.data, x = ~animais, y = ~n.anm , type ='bar')
+
+#GRÁFICO DE CAIXA
+data <- data.frame(values = rnorm(50),
+                   index = c(1:50))
+plotly::plot_ly(data,y = ~n.anm , type ='box')
+
+#GRÁFICO DE PIZZA
+presentes <- c(10, 40)
+genero <- c("Mulher", "Homem")
+
+data <- data.frame(presentes, genero)
+plotly::plot_ly(data, labels = ~genero, values = ~presentes, type = 'pie')
+
+#TABELAS 
