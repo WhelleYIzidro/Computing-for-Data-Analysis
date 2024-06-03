@@ -3,6 +3,7 @@ title: "Exercício 12 - Visualização de Dados"
 author: "Whelley Izidro"
 date: "`r format(Sys.time(), '%d / %m / %y')`"
 output: html_document
+csl: associacao-brasileira-de-normas-tecnicas-ufrgs
 ---
 # Introdução: {.tabset} 
 Aqui serão apresentados os gráficos gerados a partir da lista de exercício oferecida na disciplina de Computação para Análise de Dados do Programa de Pós-Graduação em Informática Aplicada (UFRPE).  
@@ -150,46 +151,201 @@ plot.new()
 Aqui a relação entre preços pagos por refeições e categorias de avaliação. Então, temos uma escala de preços indo de 10 a 49 dólares; as avaliações boa, muito boa e excelente e a proporção que cada uma possui.  
 Assim, vamos criar esses elementos como vetores:  
 ```{r, data.elemn, include=TRUE}
-colors <- c("green", "orange", "brown")
+colors <- c("brown", "orange", "green")
 category <- c("Good", "Very good", "Excellent")
-Good <- c(53.8, 33.9, 2.6, 0.0)
-Very.Good <- c(43.6, 54.2, 60.5, 21.4)
-Excellent <- c(2.6, 11.9, 36.8, 78.6)
+price <- c("10-19", "20-29", "30-39", "40-49")
+price <- paste(price, "$", sep = "")
 
 #Criar uma triz com os valores
 values <- 
   matrix(c(53.8, 33.9, 2.6, 0.0,
            43.6, 54.2, 60.5, 21.4,
            2.6, 11.9, 36.8, 78.6),
-         nrow = 3, ncol = 5, byrow = TRUE)
+         nrow = 3, ncol = 4, byrow = TRUE)
 
-barplot(values, main = "Qualidade de refeição", 
-        names.arg = category, xlab = "Categorias de avaliação", ylab = "Preço", col = colors, beside = FALSE)
+barplot(values, main = "Quality Rating", 
+        names.arg = price, xlab = "Meal price", ylab = "Proportion rating (%)", col = colors, beside = FALSE)
+legend("topright", pch = c(15, 15, 15), col = colors, legend = category, cex = 0.8)
 
 ```
 
 
+## Questão 3 - Histograma  
+Histogramas permitem uma visualização precisa da distribuição dos elementos de uma amostra. É possível adicionar outros elementos a plotagem final evidenciando a natureza dessa distribuição como uma curva. Neste histograma observaremos a variável "temperatura" mas antes converteremos os registros que estão em Fahrenheit para Celsius.  
+Assim, o gráfico requerido segue os seguintes passos:  
+
+Preparando os dados e convertendo as temperaturas
+```{r airquality, include=TRUE}
+dados <- airquality
+
+dados$Temp_Celsius <- round((airquality$Temp - 32) / 1.8)
+
+head(dados)
+
+```
+
+Plotagem do histograma
+```{r histo, include=TRUE}
+hist(dados$Temp_Celsius, 
+     main = "Histograma das Temperaturas (Celsius)", 
+     xlab = "Temperatura (°C)", 
+     ylab = "Frequência", 
+     col = "lightblue", 
+     border = "black")
+```
+
+
+## Questão 4 - Gráfico de Pizza  
+Será representado por um gráfico de pizza a porcentagem de vendas por país presentes no dataset `Sales.txt`.
+
+Carregando os dados
+```{r vendas, include=TRUE}
+sales <- read.table("https://training-course-material.com/images/8/8f/Sales.txt",header=TRUE)
+```
+
+Plotagem do gráfico
+```{r sales, include=TRUE}
+sales_fig <-plot_ly(sales, labels = ~COUNTRY, values = ~SALES, type = 'pie',
+               textinfo = 'label+percent', insidetextorientation = 'radial')
+# Adicionar título ao gráfico
+sales_fig <- sales_fig %>% layout(title = 'Proporção de vendas')
+
+# Ajustar o layout do gráfico com autosize
+sales_fig <- sales_fig %>% layout(
+  title = 'Proporção de vendas',
+  autosize = TRUE,
+  margin = list(l = 100, r = 100, b = 180, t = 120)
+)
+
+# Exibir o gráfico
+
+sales_fig
+```
 
 
 
+## Questão 5 - Gráfico Boxplot
+Para observar a distribuição de variáveis outros gráficos podem ser utilizados. Nesta questão, foi contruído um gráfico do tipo boxplot aplicado ao banco de dados `InsectSpray` no R para entender a distribuição da quantidade de insetos  após o uso de 6 tipos de inseticidas sem a presença de *outliers*.  
+De início, vamos carregar o banco de dados e observar brevemente sua composição  
+```{r insectdata, include=TRUE}
+data("InsectSprays")
+
+head(InsectSprays)
+```
+  
+Agora passamos para a remoção dos *outliers* existentes com o argumento `outline` e a plotagem do gráfico
+```{r outliers, include=TRUE}
+boxplot(count ~ spray, data = InsectSprays,
+        xlab = "Inseticidas  aplicados", 
+        ylab = "Constagem de insetos",
+        main = "Conatgem de insetos por aplicação de inseticida",
+        outline = FALSE,
+        col = "yellow")
+        
+```
+
+## Questão 6 - Gráfico de linhas  
+```{r diretorio, include=FALSE}
+setwd("C:\\Users\\LEVE\\Downloads")
+dir()
+```
+Aqui ilustraremos a partir de gráficos de linhas a relação entre a coleta de recursos (currentTime) e a menória utilizada (usedMemory). Antes disso, é necessário realizar alguns ajustes no banco de dados:  
+--- Ajustar a coluna `currentTime` para que os registros de tempo se organizem de maneira contínua;  
+--- Ajustar a coluna `usedMemory` para que as informações fiquem em formato megabyte.  
+Inicialmente, vamos carregar os pacotes necessários para as manipulações
 
 
 
+## Questão 7 - Gráfico de Pizza (Plotly) 
+Com base no banco de dados `Netflix Movies an TV Shows`, construiremos um gráfico de pizza para observar a proporção de filmes por país. Vamos carregar os dados:  
+```{r plotlyData, message=FALSE, warning=FALSE, results='hold'}
+library(readr)
+
+datamovie <- read.csv("C:\\Users\\LEVE\\Downloads\\netflix_titles.csv", sep = ",")
+
+```
+  
+Agora, é preciso realizar uma filtragem no banco de dados usando como referência a coluna `country` e considerando apenas os filme com apenas um páis de origem 
+```{r country, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+library(plotly)
+library(tidyverse)
+library(dplyr)
 
 
-## Questão 3 - Gráfico de   
+# Limpar os dados da coluna 'country' removendo espaços em branco
+datamovie <- datamovie %>%
+  mutate(country = str_trim(country))
 
-## Questão 4 - Gráfico de   
+# Filtrar os dados para considerar apenas os conteúdos com um país de origem
+um_pais <- datamovie %>% 
+  filter(!is.na(country) & !str_detect(country, ","))
 
-## Questão 5 - Gráfico de   
+# Verificar se há dados após a filtragem
+print(dim(um_pais))
 
-## Questão 6 - Gráfico de   
+# Agrupar os países menos frequentes
+um_pais <- um_pais %>%
+  mutate(pais_agrupado = fct_lump(country, n = 10))
 
-## Questão 7 - Gráfico de   
+# Contar os conteúdos por país agrupado
+contagem <- um_pais %>%
+  count(pais_agrupado) %>%
+  arrange(desc(n)) 
 
-## Questão 8 - Gráfico de   
+  contagem <- dplyr::filter(contagem, n != 831)
  
+```
+
+```{r pie, include=TRUE}
+# Criar o gráfico de pizza
+fig <- plot_ly(contagem, labels = ~pais_agrupado, values = ~n, type = 'pie',
+               textinfo = 'label+percent', insidetextorientation = 'radial')
+
+# Adicionar título ao gráfico
+fig <- fig %>% layout(title = ' Países com Mais Conteúdo na Netflix (2019)')
+
+# Ajustar o layout do gráfico com autosize
+fig <- fig %>% layout(
+  title = ' Países com Mais Conteúdo na Netflix (2019)',
+  autosize = TRUE,
+  margin = list(l = 100, r = 100, b = 180, t = 120)
+)
+
+# Exibir o gráfico
+fig
+```
+  
+
+## Questão 8 - Tabela (Plotly) 
+Utilizando o banco de dados filtrado na questão anterior, agora, os dados serão estruturados em uma tabela ainda utilizando o pacote `Ploty()`
+
+```{r tabela, include=TRUE}
+#elementos da tabela 
+dados <- data.frame(pais = c("Canadá", "França", "India", "Japão", "México",
+                             "Coréia do Sul", "Espanha", "Reino Unido", "Estados Unidos", "Outros"), contagem = c(181, 124, 972, 245, 110, 199, 145, 419, 2818, 1443))
+
+table_fig <- plot_ly(
+  type = 'table',
+  columnwidth = c(50, 50),
+  header = list(
+    values = c("País", "Total de conteúdos"),
+    align = c("center", "center"),
+    line = list(width = 1.5, color = c("black")),
+    fill = list(color = c("lightgrey")),
+    font = list(family = "Arial", size = 14, color = c("black"))
+  ),
+  cells = list(
+    values = rbind(dados$pais, dados$contagem),
+    align = c("center", "center"),
+    line = list(width = 1.5, color = c("black")),
+    fill = list(color = c("white")),
+    font = list(family = "Arial", size = 12, color = c("black"))
+  )
+)
+
+table_fig
+```
+
 ## Questão 9 - Gráfico de   
 
 ## Questão 10 - Gráfico de  
-
