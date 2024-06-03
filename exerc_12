@@ -204,7 +204,7 @@ sales <- read.table("https://training-course-material.com/images/8/8f/Sales.txt"
 ```
 
 Plotagem do gráfico
-```{r sales, include=TRUE}
+```{r sales, message=FALSE, warning=FALSE, include=TRUE}
 library(plotly)
 sales_fig <-plot_ly(sales, labels = ~COUNTRY, values = ~SALES, type = 'pie',
                textinfo = 'label+percent', insidetextorientation = 'radial')
@@ -247,7 +247,7 @@ boxplot(count ~ spray, data = InsectSprays,
 
 ## Questão 6 - Gráfico de linhas  
 ```{r diretorio, include=FALSE}
-setwd("C:\\Users\\LEVE\\Downloads")
+setwd("C:\\Users\\karin\\Downloads")
 dir()
 ```
 Aqui ilustraremos a partir de gráficos de linhas a relação entre a coleta de recursos (currentTime) e a menória utilizada (usedMemory). Antes disso, é necessário realizar alguns ajustes no banco de dados:  
@@ -262,7 +262,7 @@ Com base no banco de dados `Netflix Movies an TV Shows`, construiremos um gráfi
 ```{r plotlyData, message=FALSE, warning=FALSE, results='hold'}
 library(readr)
 
-datamovie <- read.csv("C:\\Users\\LEVE\\Downloads\\netflix_titles.csv", sep = ",")
+datamovie <- read.csv("C:\\Users\\karin\\Downloads\\netflix_titles.csv", sep = ",")
 
 ```
   
@@ -347,6 +347,102 @@ table_fig <- plot_ly(
 table_fig
 ```
 
-## Questão 9 - Gráfico de   
+## Questão 9 - Gráfico de linhas (Plotly)
+Ainda usando o banco de dados `netflix_titles.csv` foi contruido um gráfico de linhas que expressa a quantidade de conteúdos criados por década. Sendo assim, antes da plotagem, precisamos ajustar os dados que utilizaremos.  
+  
+  Carregando os dados
+```{r decdata, message=FALSE, warning=FALSE, include=TRUE}
+library(readr)
 
-## Questão 10 - Gráfico de  
+datamovie <- read.csv("C:\\Users\\karin\\Downloads\\netflix_titles.csv", sep = ",")
+```
+  
+Agora damos sequencia a manipulação, adicionando uma coluna com as décadas  
+```{r coldec, message=FALSE, warning=FALSE, include=TRUE}
+library(dplyr)
+
+datamovie <- datamovie %>%
+  mutate(decada = (release_year %/% 10) * 10)
+
+```
+  
+Em seguida contabilizamos a quantidade de filmes e séries feitas por década  
+```{r content, message=FALSE, warning=FALSE, include=TRUE}
+library(tidyr)
+
+conteudo_decada <- datamovie %>%
+  group_by(decada, type) %>%
+  summarise(count = n()) %>%
+  spread(type, count, fill = 0)
+
+# Certifique-se de que as colunas estão corretamente nomeadas
+colnames(conteudo_decada) <- c("decada", "Movies", "TV Shows")
+
+conteudo_decada
+
+
+```
+  
+  Agora seguimos para a plotagem do gráfico  
+```{r plot_movie, message=TRUE, warning=FALSE, include=TRUE}
+library(plotly)
+
+dados <-  data.frame( decada =  c(1920, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020),
+Movies = c(0, 13, 11, 22, 63, 99, 194, 601, 3951, 423), 
+Tv_Shows = c(1, 1, 0, 3, 4, 7, 31, 127, 1760, 476))
+
+
+# Criar o gráfico de linha com pontos
+fig <- plot_ly(dados, x = ~decada, y = ~Movies, type = 'scatter', mode = 'lines', name = 'Movies', line = list(color = 'yellow'))
+
+fig <- fig %>% add_trace(y = ~Tv_Shows, name = 'TV Shows', mode = 'lines', line = list(color = 'blue'))
+
+fig
+```
+
+
+## Questão 10 - Gráfico de barras (Plotly)  
+Agora construiremos um gráfico de barras que representa a quantidade de filmes lançados de um determinado gênero entre os anos de 2000 e 2010.  
+
+Carregando os dados  
+```{r count_movie, message=FALSE, warning=FALSE, include=TRUE}
+library(readr)
+
+datamovie <- read.csv("C:\\Users\\karin\\Downloads\\netflix_titles.csv", sep = ",")
+
+```
+  
+Agora os dados serão filtrados pelos lançamentos entre 2000 e 2010, separando os filmes com multiplos gêneros.  
+```{r filtro, message=FALSE, warning=FALSE, include=TRUE}
+
+filmes <- datamovie %>%
+  filter(type == "Movie", release_year >= 2000, release_year <= 2010) %>%
+  mutate(primeiro_genero = sapply(strsplit(listed_in, ", "), `[`, 1)) %>%
+  filter(primeiro_genero %in% c("Dramas", "Action & Adventure", "Comedies"))
+
+#quantidade de filmes lançados por ano e por gênero
+conteudo_genero <- filmes %>%
+  group_by(release_year, primeiro_genero) %>%
+  summarise(count = n()) %>%
+  spread(primeiro_genero, count, fill = 0)
+
+```
+  
+Agora plotaremos o gráfico  
+```{r plotagem, message=FALSE, warning=FALSE, include=TRUE}
+
+# Criar o gráfico de barras
+fig <- plot_ly(conteudo_genero, x = ~release_year, y = ~Dramas, type = 'bar', name = 'Dramas')
+fig <- fig %>% add_trace(y = ~`Action & Adventure`, name = 'Action & Adventure')
+fig <- fig %>% add_trace(y = ~Comedies, name = 'Comedies')
+
+# Atualizar layout do gráfico
+fig <- fig %>% layout(barmode = 'group',
+                      title = 'Quantidade de Filmes por Gênero (2000-2010)',
+                      xaxis = list(title = 'Ano de Lançamento'),
+                      yaxis = list(title = 'Quantidade de Filmes'))
+
+# Mostrar o gráfico
+fig
+
+```
