@@ -205,6 +205,7 @@ sales <- read.table("https://training-course-material.com/images/8/8f/Sales.txt"
 
 Plotagem do gráfico
 ```{r sales, include=TRUE}
+library(plotly)
 sales_fig <-plot_ly(sales, labels = ~COUNTRY, values = ~SALES, type = 'pie',
                textinfo = 'label+percent', insidetextorientation = 'radial')
 # Adicionar título ao gráfico
